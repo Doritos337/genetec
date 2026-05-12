@@ -1,0 +1,22 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "ignoreFiles": [
+    "dist/**",
+    "node_modules/**",
+    "**/*.json",
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.tsx",
+    "**/*.ts",
+    "**/*.html"
+  ],
+  "rules": {
+    "selector-class-pattern": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
+      }
+    ]
+  }
+}

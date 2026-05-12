@@ -1,0 +1,13 @@
+.headerMain {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: var(--mantine-spacing-md);
+}
+
+@media (min-width: $mantine-breakpoint-sm) {
+  .headerMain {
+    padding: var(--mantine-spacing-lg);
+  }
+}

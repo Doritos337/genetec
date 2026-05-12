@@ -1,0 +1,14 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema-json-bindings.json",
+  "entry": [
+    "src/main.tsx",
+    "src/routes/**/*.tsx"
+  ],
+  "project": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "ignore": [
+    "src/routeTree.gen.ts"
+  ]
+}
