@@ -2,3 +2,9 @@
   padding: var(--mantine-spacing-md);
   height: 100%;
 }
+
+@media (min-width: $mantine-breakpoint-sm) {
+  .appShell {
+    padding: var(--mantine-spacing-xl) calc(var(--mantine-spacing-xl) * 2);
+  }
+}

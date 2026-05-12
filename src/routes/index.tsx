@@ -1,5 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { GridDemo } from 'features/data-grid';
 
 export const Route = createFileRoute('/')({
-  component: () => <div>Hello, Genetec!</div>,
+  component: () => (
+    <div>
+      <GridDemo />
+    </div>
+  ),
 });
