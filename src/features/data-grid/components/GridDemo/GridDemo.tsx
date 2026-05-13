@@ -1,7 +1,7 @@
-import { useState, useMemo } from 'react';
-import { TextInput, Select } from '@mantine/core';
+import { useMemo, useState } from 'react';
+import { Select, TextInput } from 'ui';
 import { DataGrid, type GridColumn } from 'components';
-import { MOCK_RECORDS, type MockRecord } from 'mocks/gridData';
+import { useEventsStore, type AppEvent } from 'lib/store';
 import { useSorting } from '../../hooks/useSorting';
 import { useFiltering } from '../../hooks/useFiltering';
 import { GridControls } from './GridControls';
@@ -15,18 +15,17 @@ const COLUMN_OPTIONS = [
   { value: 'role', label: 'Role' },
   { value: 'department', label: 'Department' },
 ];
+const DEFAULT_VISIBLE_COLUMNS = ['id', 'name', 'role', 'department'];
+const ERROR_MESSAGE = 'Failed to load dataset.';
 
 export const GridDemo = () => {
+  const events = useEventsStore((state) => state.events);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [visibleColumnIds, setVisibleColumnIds] = useState<string[]>([
-    'id',
-    'name',
-    'role',
-    'department',
-  ]);
+  const [visibleColumnIds, setVisibleColumnIds] = useState<string[]>(DEFAULT_VISIBLE_COLUMNS);
 
-  const { filteredRecords, filters, handleFilterChange, clearFilters } = useFiltering(MOCK_RECORDS);
+  const { filteredRecords, filters, handleFilterChange, clearFilters } = useFiltering(events);
   const { sortedRecords, sortState, handleSort } = useSorting(filteredRecords);
 
   const [page, setPage] = useState(1);
@@ -34,16 +33,15 @@ export const GridDemo = () => {
 
   const paginatedRecords = useMemo(() => {
     const from = (page - 1) * pageSize;
-    const to = from + pageSize;
-    return sortedRecords.slice(from, to);
+    return sortedRecords.slice(from, from + pageSize);
   }, [sortedRecords, page, pageSize]);
 
-  const onFilterApply = (accessor: string, value: string) => {
+  const applyFilter = (accessor: string, value: string) => {
     handleFilterChange(accessor, value);
     setPage(1);
   };
 
-  const columns = useMemo<GridColumn<MockRecord>[]>(
+  const columns = useMemo<GridColumn<AppEvent>[]>(
     () => [
       {
         accessor: 'id',
@@ -62,8 +60,8 @@ export const GridDemo = () => {
             label="Filter by name"
             placeholder="Search..."
             size="sm"
-            value={filters.name || ''}
-            onChange={(e) => onFilterApply('name', e.currentTarget.value)}
+            value={filters.name ?? ''}
+            onChange={(event) => applyFilter('name', event.currentTarget.value)}
           />
         ),
       },
@@ -85,8 +83,8 @@ export const GridDemo = () => {
             placeholder="All departments"
             size="sm"
             data={DEPARTMENTS}
-            value={filters.department || null}
-            onChange={(value) => onFilterApply('department', value || '')}
+            value={filters.department ?? null}
+            onChange={(value) => applyFilter('department', value ?? '')}
             clearable
           />
         ),
@@ -97,11 +95,10 @@ export const GridDemo = () => {
 
   const activeSortStatus =
     sortState.columnAccessor && sortState.direction !== 'unsorted'
-      ? {
-          columnAccessor: sortState.columnAccessor as string,
-          direction: sortState.direction,
-        }
+      ? { columnAccessor: sortState.columnAccessor as string, direction: sortState.direction }
       : null;
+
+  const isFiltered = Object.values(filters).some(Boolean);
 
   return (
     <div className={styles.container}>
@@ -109,9 +106,10 @@ export const GridDemo = () => {
         setIsLoading={setIsLoading}
         error={error}
         setError={setError}
+        errorMessage={ERROR_MESSAGE}
         visibleColumnIds={visibleColumnIds}
         setVisibleColumnIds={setVisibleColumnIds}
-        isFiltered={Object.values(filters).some(Boolean)}
+        isFiltered={isFiltered}
         clearFilters={clearFilters}
         columnOptions={COLUMN_OPTIONS}
       />
@@ -132,7 +130,7 @@ export const GridDemo = () => {
           setPage(1);
         }}
         sortStatus={activeSortStatus}
-        onSortStatusChange={(status) => handleSort(status.columnAccessor as keyof MockRecord)}
+        onSortStatusChange={(status) => handleSort(status.columnAccessor as keyof AppEvent)}
       />
     </div>
   );

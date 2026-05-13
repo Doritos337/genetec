@@ -1,7 +1,7 @@
 import { useForm } from '@mantine/form';
-import { TextInput, Select, Button, Title, Paper } from 'ui';
+import { Button, Paper, Select, TextInput, Title } from 'ui';
 import styles from './EventForm.module.css';
-import { type EventFormProps, type EventFormValues } from './EventForm.types.ts';
+import { type EventFormProps, type EventFormValues } from './EventForm.types';
 
 const CATEGORY_OPTIONS = [
   { value: 'info', label: 'Info' },
@@ -10,14 +10,18 @@ const CATEGORY_OPTIONS = [
   { value: 'error', label: 'Error' },
 ];
 
-export const EventForm = ({ initialValues, onSubmit, onCancel }: EventFormProps) => {
+const buildInitialValues = (initial?: Partial<EventFormValues>): EventFormValues => ({
+  title: initial?.title ?? '',
+  description: initial?.description ?? '',
+  timestamp: initial?.timestamp ?? new Date().toISOString().slice(0, 16),
+  category: initial?.category ?? 'info',
+});
+
+export const EventForm = ({ initialValues, onSubmit, onCancel, submitLabel }: EventFormProps) => {
+  const isEditing = Boolean(initialValues);
+
   const form = useForm<EventFormValues>({
-    initialValues: {
-      title: initialValues?.title || '',
-      description: initialValues?.description || '',
-      timestamp: initialValues?.timestamp || new Date().toISOString().slice(0, 16),
-      category: initialValues?.category || 'info',
-    },
+    initialValues: buildInitialValues(initialValues),
     validate: {
       title: (value) => (value.trim().length < 3 ? 'Title must be at least 3 characters' : null),
       description: (value) =>
@@ -29,21 +33,19 @@ export const EventForm = ({ initialValues, onSubmit, onCancel }: EventFormProps)
 
   const handleError = (errors: typeof form.errors) => {
     const firstInvalidPath = Object.keys(errors)[0];
-    if (firstInvalidPath) {
-      const node = form.getInputNode(firstInvalidPath);
-      if (node) {
-        node.focus();
-      }
-    }
+    if (!firstInvalidPath) return;
+
+    const node = form.getInputNode(firstInvalidPath);
+    node?.focus();
   };
 
   return (
     <Paper p="md" withBorder className={styles.formWrapper}>
       <Title order={4} mb="md">
-        {initialValues ? 'Edit Event' : 'Create New Event'}
+        {isEditing ? 'Edit Event' : 'Create New Event'}
       </Title>
 
-      <form onSubmit={form.onSubmit(onSubmit, handleError)}>
+      <form onSubmit={form.onSubmit(onSubmit, handleError)} noValidate>
         <TextInput
           label="Event Title"
           placeholder="e.g. Server Restart"
@@ -82,7 +84,7 @@ export const EventForm = ({ initialValues, onSubmit, onCancel }: EventFormProps)
             </Button>
           )}
           <Button type="submit" variant="filled">
-            Save Event
+            {submitLabel ?? (isEditing ? 'Save Changes' : 'Create Event')}
           </Button>
         </div>
       </form>

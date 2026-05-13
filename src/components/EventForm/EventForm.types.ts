@@ -1,4 +1,4 @@
-import { type EventCategory } from 'components/Timeline/Timeline.types';
+import { type EventCategory } from 'lib/store';
 
 export interface EventFormValues {
   title: string;
@@ -11,4 +11,5 @@ export interface EventFormProps {
   initialValues?: Partial<EventFormValues>;
   onSubmit: (values: EventFormValues) => void;
   onCancel?: () => void;
+  submitLabel?: string;
 }

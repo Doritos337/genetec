@@ -1,21 +1,29 @@
 import { useMemo } from 'react';
-import { Timeline } from 'components';
-import { MOCK_TIMELINE_EVENTS } from 'mocks/timeline.ts';
+import { Timeline, type TimelineEventRecord } from 'components';
+import { useEventsStore } from 'lib/store';
+import { notify } from 'lib/notify';
 import { groupEventsByDate } from '../utils/groupEvents';
 import styles from './TimelineDemo.module.css';
 
 export const TimelineDemo = () => {
+  const events = useEventsStore((state) => state.events);
+
   const groupedData = useMemo(() => {
-    return groupEventsByDate(MOCK_TIMELINE_EVENTS);
-  }, []);
+    const records: TimelineEventRecord[] = events.slice(0, 50).map((event) => ({
+      id: event.id,
+      title: event.title,
+      description: event.description,
+      timestamp: event.timestamp,
+      category: event.category,
+    }));
+    return groupEventsByDate(records);
+  }, [events]);
 
   return (
     <div className={styles.demoContainer}>
       <Timeline
         data={groupedData}
-        onEventClick={(event) => {
-          alert(`Selected event: ${event.title}`);
-        }}
+        onEventClick={(event) => notify.info(event.title, 'Selected event')}
       />
     </div>
   );

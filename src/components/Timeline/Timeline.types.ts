@@ -1,4 +1,6 @@
-export type EventCategory = 'info' | 'success' | 'warning' | 'error';
+import { type EventCategory } from 'lib/store';
+
+export type { EventCategory };
 
 export interface TimelineEventRecord {
   id: string;

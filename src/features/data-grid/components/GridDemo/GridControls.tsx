@@ -1,21 +1,28 @@
-import { Button, MultiSelect, Group } from 'ui';
+import { Button, Group, MultiSelect } from 'ui';
 import styles from './GridControls.module.css';
+
+interface ColumnOption {
+  value: string;
+  label: string;
+}
 
 interface GridControlsProps {
   setIsLoading: (value: boolean | ((prev: boolean) => boolean)) => void;
   error: string | null;
   setError: (value: string | null) => void;
+  errorMessage: string;
   visibleColumnIds: string[];
   setVisibleColumnIds: (ids: string[]) => void;
   isFiltered: boolean;
   clearFilters: () => void;
-  columnOptions: { value: string; label: string }[];
+  columnOptions: ColumnOption[];
 }
 
 export const GridControls = ({
   setIsLoading,
   error,
   setError,
+  errorMessage,
   visibleColumnIds,
   setVisibleColumnIds,
   isFiltered,
@@ -31,7 +38,7 @@ export const GridControls = ({
         <Button
           size="xs"
           color={error ? 'red' : 'gray'}
-          onClick={() => setError(error ? null : 'Failed to load dataset.')}
+          onClick={() => setError(error ? null : errorMessage)}
         >
           Toggle Error
         </Button>
