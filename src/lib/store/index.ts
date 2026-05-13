@@ -1,2 +1,2 @@
 export { useEventsStore } from './eventsStore';
-export type { AppEvent, EventCategory, NewEventInput } from './events.types';
+export type { AppEvent, EventCategory } from './events.types';

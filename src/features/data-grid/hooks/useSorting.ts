@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 
-export type SortDirection = 'asc' | 'desc' | 'unsorted';
+type SortDirection = 'asc' | 'desc' | 'unsorted';
 
 export interface SortState<T> {
   columnAccessor: keyof T | null;

@@ -61,7 +61,7 @@ const buildPerson = (index: number) => {
   };
 };
 
-export const generateMockEvents = (count: number): AppEvent[] => {
+const generateMockEvents = (count: number): AppEvent[] => {
   return Array.from({ length: count }, (_, index) => {
     const person = buildPerson(index);
     const highlight = HIGHLIGHTED_EVENTS[index];
