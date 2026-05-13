@@ -1,6 +1,6 @@
 import { Button } from '@mantine/core';
 import { DataTable } from 'mantine-datatable';
-import { type ReactNode } from 'react';
+import { useMemo, type ReactNode } from 'react';
 import styles from './DataGrid.module.css';
 import { type DataGridProps } from './DataGrid.types';
 
@@ -16,13 +16,22 @@ export const DataGrid = <T,>({
   recordsPerPageOptions,
   onPageChange,
   onRecordsPerPageChange,
+  sortStatus,
+  onSortStatusChange,
 }: DataGridProps<T>): ReactNode => {
-  const visibleColumns = columns
-    .filter((col) => !col.hidden)
-    .map((col) => ({
-      accessor: col.accessor,
-      title: col.label,
-    }));
+  const visibleColumns = useMemo(
+    () =>
+      columns
+        .filter((col) => !col.hidden)
+        .map((col) => ({
+          accessor: col.accessor,
+          title: col.label,
+          sortable: col.sortable,
+          filter: col.filter,
+          filtering: col.filtering,
+        })),
+    [columns],
+  );
 
   if (error) {
     return (
@@ -49,6 +58,14 @@ export const DataGrid = <T,>({
         }
       : {};
 
+  const mappedSortStatus =
+    sortStatus && sortStatus.columnAccessor
+      ? {
+          columnAccessor: sortStatus.columnAccessor,
+          direction: sortStatus.direction,
+        }
+      : undefined;
+
   return (
     <DataTable
       withTableBorder
@@ -61,6 +78,12 @@ export const DataGrid = <T,>({
       records={records}
       columns={visibleColumns}
       noRecordsText="No records found"
+      sortStatus={mappedSortStatus}
+      onSortStatusChange={(status) => {
+        if (onSortStatusChange) {
+          onSortStatusChange(status);
+        }
+      }}
       {...(paginationProps as any)}
     />
   );
