@@ -1,0 +1,20 @@
+.demoWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mantine-spacing-xl);
+}
+
+.modeToggleGroup {
+  display: flex;
+  gap: var(--mantine-spacing-sm);
+}
+
+.successRegion {
+  width: 100%;
+  max-width: 500px;
+  padding: var(--mantine-spacing-sm);
+  overflow-x: auto;
+  background-color: var(--mantine-color-gray-1);
+  border-radius: var(--mantine-radius-sm);
+}

@@ -1,0 +1,11 @@
+.formWrapper {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--mantine-spacing-sm);
+  margin-top: var(--mantine-spacing-xl);
+}
