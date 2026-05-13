@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Title } from '@mantine/core';
+import { Title } from 'ui';
 
 export const Route = createFileRoute('/form')({
   component: FormRoute,

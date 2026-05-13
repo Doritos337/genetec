@@ -1,0 +1,45 @@
+.timelineWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-xl);
+  outline: none;
+}
+
+.groupContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-md);
+}
+
+.groupLabel {
+  font-weight: 600;
+  color: var(--mantine-color-dimmed);
+  border-bottom: 1px solid var(--mantine-color-default-border);
+  padding-bottom: var(--mantine-spacing-xs);
+}
+
+.eventCard {
+  cursor: pointer;
+  transition: background-color 150ms ease;
+  outline-offset: 2px;
+}
+
+.eventCard:hover {
+  background-color: var(--mantine-color-default-hover);
+}
+
+.eventCard:focus-visible {
+  outline: 2px solid var(--mantine-color-blue-filled);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

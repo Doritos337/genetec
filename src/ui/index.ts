@@ -6,5 +6,8 @@ export * from './Group/Group.tsx';
 export * from './MantineProvider/MantineProvider.tsx';
 export * from './MultiSelect/MultiSelect.tsx';
 export * from './TextInput/TextInput.tsx';
+export * from './MantineTimeline/MantineTimeline.tsx';
 export * from './Title/Title';
 export * from './Select/Select.tsx';
+export * from './Text/Text.tsx';
+export * from './Paper/Paper.tsx';
