@@ -1,5 +1,7 @@
 export * from './AppShell/AppShell';
 export * from './Button/Button.tsx';
+export * from './Burger/Burger.tsx';
+export * from './Drawer/Drawer.tsx';
 export * from './Group/Group.tsx';
 export * from './MantineProvider/MantineProvider.tsx';
 export * from './MultiSelect/MultiSelect.tsx';

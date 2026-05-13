@@ -1,10 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { GridDemo } from 'features/data-grid';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/')({
-  component: () => (
-    <div>
-      <GridDemo />
-    </div>
-  ),
+  beforeLoad: () => {
+    throw redirect({
+      to: '/datagrid',
+    });
+  },
 });
